@@ -543,7 +543,7 @@ class SolrSchema(object):
         if doc.tag in 'doc':
             return dict([self.parse_result_doc(n) for n in doc.getchildren()])
         field_class = self.match_field(name)
-        if field_class is None and name == "score":
+        if field_class is None and (name == "score" or "$" in name): # allow custom fields, assume type double
             field_class = SolrScoreField()
         elif field_class is None:
             raise SolrError("unexpected field found in result (field name: %s)" % name)
